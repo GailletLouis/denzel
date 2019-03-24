@@ -4,8 +4,25 @@
   "description": "The must-watch Denzel's movies",
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
+    "mongodb": "^3.2.2",
     "node-fetch": "^2.3.0",
     "p-limit": "^2.2.0",
     "p-settle": "^2.1.0"
-  }
+  },
+  "main": "denzelapp.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GailletLouis/denzel.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GailletLouis/denzel/issues"
+  },
+  "homepage": "https://github.com/GailletLouis/denzel#readme"
 }
