@@ -31,7 +31,7 @@ app.get("/movies/populate", (request, response) => {
         collection.insertMany(movies,(error,result)=>{
           if(error){
             return response.status(500).send(error);
-            console.log('error: could not load movies')
+            console.log('error: could not load movies');
           }
           console.log('populating successful of '+ result.result.n + "  movies");
           retour = {"total" : result.result.n};
@@ -47,13 +47,28 @@ app.get("/movies", (request, response) => {
         
         if (error) {
             return res.status(500).send(error);
-            console.log('error: could not request a must watch movie')
+            console.log('error: could not request a must watch movie');
         }
 
         var index = Math.floor(Math.random() * result.length); // produce a random index between 0 and the index of the last movie
         var movie = result[index];
         response.send(movie); // send the movie to client
       });    
+});
+
+// get a movie by id
+app.get('/movies/:id', (request, response) => {
+    TestCollectionConnection
+
+    var request_id = request.params.id;
+    collection.find({ id: request_id }).toArray((error, result) => {
+        if (error) {
+            return result.status(500).send(error);
+            console.log('could not request by id a movie');
+        }
+        if (result.length > 0) { response.send(result[0]); }
+        else { response.status(500).send({ error: `could not find this id : ${id}` }); }
+    });
 });
 
 function TestCollectionConnection(response){
