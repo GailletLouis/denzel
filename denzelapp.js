@@ -22,16 +22,15 @@ app.listen(9292, () => {
     });
 });
 
+//populate the database with a request
+// Request in cmd : curl -H "Accept: application/json" http://localhost:9292/movies/populate
 app.get("/movies/populate", (request, response) => {
-    if(!collection){
-        return response.status(500).send('The database is not connected');
-        console.log('error, pas de collection')
-      }
+    TestCollectionConnection(response);
       imdb(DENZEL_IMDB_ID).then((val)=>{
         movies = val;
         collection.insertMany(movies,(error,result)=>{
           if(error){
-            return res.status(500).send(error);
+            return response.status(500).send(error);
             console.log('error: could not load movies')
           }
           console.log('populating successful of '+ result.result.n + "  movies");
@@ -40,3 +39,26 @@ app.get("/movies/populate", (request, response) => {
         });
       });    
 });
+
+// get a mush watch movie (random selection, metascore greater than 70)
+app.get("/movies", (request, response) => {
+    TestCollectionConnection(response);
+    collection.find({ metascore: { $gte: 70 } }).toArray((error, result) => {
+        
+        if (error) {
+            return res.status(500).send(error);
+            console.log('error: could not request a must watch movie')
+        }
+
+        var index = Math.floor(Math.random() * result.length); // produce a random index between 0 and the index of the last movie
+        var movie = result[index];
+        response.send(movie); // send the movie to client
+      });    
+});
+
+function TestCollectionConnection(response){
+    if(!collection){
+        return response.status(500).send('The database is not connected');
+        console.log('error, collection not availabe')
+      }
+}
